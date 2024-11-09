@@ -1,8 +1,59 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
+import { Artist, artists } from '../interfaces/interfaces';
+import { CreateArtistDto, UpdateArtistDto } from './dto/artist.dto';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class ArtistService {
-  getHello(): string {
-    return 'Hello World!';
+  createArtist(dto: CreateArtistDto) {
+    const artist: Artist = {
+      id: v4(),
+      name: dto.name,
+      grammy: dto.grammy,
+    };
+    artists.push(artist);
+    return artist;
+  }
+
+  getAllArtists(): Artist[] {
+    return artists;
+  }
+
+  getArtistById(id: string): Artist {
+    const existedArtist = artists.find((artist) => artist.id === id);
+
+    if (existedArtist) {
+      return existedArtist;
+    } else {
+      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
+    }
+  }
+
+  updateArtist(dto: UpdateArtistDto, id: string): Artist {
+    const existedArtist = artists.find((artist) => {
+      if (artist.id === id) {
+        artist.name = dto.name;
+        artist.grammy = dto.grammy;
+        return true;
+      }
+    });
+
+    if (existedArtist) {
+      return existedArtist;
+    } else {
+      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
+    }
+  }
+  deleteArtist(id: string) {
+    const existedArtist = artists.find((artist, ind) => {
+      if (artist.id === id) {
+        artists.splice(ind, 1);
+        return true;
+      }
+    });
+
+    if (!existedArtist) {
+      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
+    }
   }
 }

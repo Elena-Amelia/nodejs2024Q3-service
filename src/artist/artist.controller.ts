@@ -1,12 +1,44 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  ParseUUIDPipe,
+  Delete,
+} from '@nestjs/common';
 import { ArtistService } from './artist.service';
+import { Artist } from '../interfaces/interfaces';
+import { CreateArtistDto, UpdateArtistDto } from './dto/artist.dto';
 
-@Controller()
+@Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Get()
-  getHello(): string {
-    return this.artistService.getHello();
+  getAllArtists(): Artist[] {
+    return this.artistService.getAllArtists();
+  }
+
+  @Get(':id')
+  getArtistById(@Param('id', new ParseUUIDPipe()) id: string): Artist {
+    return this.artistService.getArtistById(id);
+  }
+
+  @Post()
+  create(@Body() createArtistDto: CreateArtistDto) {
+    return this.artistService.createArtist(createArtistDto);
+  }
+  @Put(':id')
+  updateArtist(
+    @Body() updateArtist: UpdateArtistDto,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Artist {
+    return this.artistService.updateArtist(updateArtist, id);
+  }
+  @Delete(':id')
+  deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.artistService.deleteArtist(id);
   }
 }
