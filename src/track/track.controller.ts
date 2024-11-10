@@ -18,12 +18,12 @@ import {
     constructor(private readonly trackService: TrackService) {}
   
     @Get()
-    getAllTracks(): Track[] {
+    getAll(): Track[] {
       return this.trackService.getAllTracks();
     }
   
     @Get(':id')
-    getTrackById(@Param('id', new ParseUUIDPipe()) id: string): Track {
+    getById(@Param('id', new ParseUUIDPipe()) id: string): Track {
       return this.trackService.getTrackById(id);
     }
   
@@ -32,7 +32,7 @@ import {
       return this.trackService.createTrack(createTrackDto);
     }
     @Put(':id')
-    updateTrack(
+    update(
       @Body() updateTrack: UpdateTrackDto,
       @Param('id', new ParseUUIDPipe()) id: string,
     ): Track {
@@ -40,7 +40,7 @@ import {
     }
     @Delete(':id')
     @HttpCode(204)
-    deleteTrack(@Param('id', new ParseUUIDPipe()) id: string) {
+    delete(@Param('id', new ParseUUIDPipe()) id: string) {
       return this.trackService.deleteTrack(id);
     }
   }

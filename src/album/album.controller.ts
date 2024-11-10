@@ -18,12 +18,12 @@ export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Get()
-  getAllAlbums(): Album[] {
+  getAll(): Album[] {
     return this.albumService.getAllAlbums();
   }
 
   @Get(':id')
-  getAlbumById(@Param('id', new ParseUUIDPipe()) id: string): Album {
+  getById(@Param('id', new ParseUUIDPipe()) id: string): Album {
     return this.albumService.getAlbumById(id);
   }
 
@@ -32,7 +32,7 @@ export class AlbumController {
     return this.albumService.createAlbum(createAlbumDto);
   }
   @Put(':id')
-  updateAlbum(
+  update(
     @Body() updateAlbum: UpdateAlbumDto,
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Album {
@@ -40,7 +40,7 @@ export class AlbumController {
   }
   @Delete(':id')
   @HttpCode(204)
-  deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+  delete(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.albumService.deleteAlbum(id);
   }
 }

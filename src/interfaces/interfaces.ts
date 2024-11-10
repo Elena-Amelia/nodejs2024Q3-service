@@ -35,7 +35,18 @@ export interface Favorites {
   tracks: string[]; // favorite tracks ids
 }
 
+export interface FavoritesResponse{
+  artists: Artist[];
+  albums: Album[];
+  tracks: Track[];
+}
+
 export const users: User[] = [];
 export const artists: Artist[] = [];
 export const albums: Album[] = [];
 export const tracks: Track[] = [];
+export const favorites: Favorites = {
+  artists: [],
+  albums: [],
+  tracks: [],
+};

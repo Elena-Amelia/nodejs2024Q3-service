@@ -8,12 +8,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getAllUsers(): User[] {
+  getAll(): User[] {
     return this.userService.getAllUsers();
   }
 
   @Get(':id')
-  getUserById(@Param('id', new ParseUUIDPipe()) id:string): User {
+  getById(@Param('id', new ParseUUIDPipe()) id:string): User {
     return this.userService.getUserById(id);
   }
 
@@ -22,12 +22,12 @@ export class UserController {
     return this.userService.createUser(createUserDto)
   }
   @Put(':id')
-  updateUserPassword(@Body() updatePasswordDto: UpdatePasswordDto, @Param('id', new ParseUUIDPipe()) id:string): User {
+  update(@Body() updatePasswordDto: UpdatePasswordDto, @Param('id', new ParseUUIDPipe()) id:string): User {
     return this.userService.updateUserPassword(updatePasswordDto, id);
   }
   @Delete(':id')
   @HttpCode(204)
-  deleteUser(@Param('id', new ParseUUIDPipe()) id:string) {
+  delete(@Param('id', new ParseUUIDPipe()) id:string) {
     return this.userService.deleteUser(id);
   }
 }

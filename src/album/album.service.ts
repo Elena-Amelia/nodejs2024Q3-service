@@ -1,5 +1,5 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
-import { Album, albums, tracks } from '../interfaces/interfaces';
+import { Album, albums, tracks, favorites } from '../interfaces/interfaces';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto/Album.dto';
 import { v4 } from 'uuid';
 
@@ -46,18 +46,16 @@ export class AlbumService {
       throw new HttpException("Album doesn't exist", HttpStatus.NOT_FOUND);
     }
   }
+
   deleteAlbum(id: string) {
     const existedAlbum = albums.find((album, ind) => {
       if (album.id === id) {
-
-
-        tracks.find((elem) => {
-          if (elem.albumId === id) {
-            elem.albumId = null;
-          }
-        })
-
         albums.splice(ind, 1);
+        tracks
+          .filter((elem) => elem.albumId === id)
+          .forEach((elem) => (elem.albumId = null));
+
+        favorites.albums = favorites.albums.filter((elem) => elem !== id);
         return true;
       }
     });
