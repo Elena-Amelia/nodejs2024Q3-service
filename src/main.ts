@@ -1,4 +1,4 @@
-import { NestFactory} from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as yaml from 'yamljs';
@@ -10,10 +10,12 @@ async function bootstrap() {
   const doc: OpenAPIObject = yaml.load('./doc/api.yaml');
   SwaggerModule.setup('doc', app, doc);
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-  }));
-  
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  );
+
   await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();

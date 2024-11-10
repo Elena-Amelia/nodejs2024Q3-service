@@ -54,7 +54,7 @@ export class ArtistService {
     const existedArtist = artists.find((artist, ind) => {
       if (artist.id === id) {
         artists.splice(ind, 1);
-        
+
         tracks.find((elem) => {
           if (elem.artistId === id) {
             elem.artistId = null;
@@ -67,7 +67,7 @@ export class ArtistService {
           }
         });
 
-        favorites.artists  = favorites.artists.filter((elem) => elem !== id);
+        favorites.artists = favorites.artists.filter((elem) => elem !== id);
         return true;
       }
     });

@@ -48,7 +48,7 @@ export class TrackService {
       throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
     }
   }
-  
+
   deleteTrack(id: string) {
     const existedTrack = tracks.find((track, ind) => {
       if (track.id === id) {

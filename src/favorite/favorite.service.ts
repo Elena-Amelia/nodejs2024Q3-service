@@ -1,22 +1,22 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import {
-  Favorites,
   FavoritesResponse,
   artists,
   favorites,
-  tracks, albums
+  tracks,
+  albums,
 } from '../interfaces/interfaces';
-
-import { v4 } from 'uuid';
 
 @Injectable()
 export class FavoritesService {
   getAll(): FavoritesResponse {
     return {
-        artists: artists.filter((artist) => favorites.artists.includes(artist.id)),
-        albums: albums.filter((album) => favorites.albums.includes(album.id)),
-        tracks: tracks.filter((track) => favorites.tracks.includes(track.id)),
-    }
+      artists: artists.filter((artist) =>
+        favorites.artists.includes(artist.id),
+      ),
+      albums: albums.filter((album) => favorites.albums.includes(album.id)),
+      tracks: tracks.filter((track) => favorites.tracks.includes(track.id)),
+    };
   }
 
   createTrack(id: string) {
@@ -47,7 +47,6 @@ export class FavoritesService {
 
     if (favTrackIndex !== -1) {
       favorites.tracks.splice(favTrackIndex, 1);
-
     } else {
       throw new HttpException(
         "Track doesn't exist in Favorites",
@@ -84,7 +83,6 @@ export class FavoritesService {
 
     if (artistIndex !== -1) {
       favorites.artists.splice(artistIndex, 1);
-
     } else {
       throw new HttpException(
         "Track doesn't exist in Favorites",
@@ -120,7 +118,6 @@ export class FavoritesService {
 
     if (albumIndex !== -1) {
       favorites.albums.splice(albumIndex, 1);
-
     } else {
       throw new HttpException(
         "Track doesn't exist in Favorites",

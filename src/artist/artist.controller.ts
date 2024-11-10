@@ -7,7 +7,7 @@ import {
   Param,
   ParseUUIDPipe,
   Delete,
-  HttpCode
+  HttpCode,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { Artist } from '../interfaces/interfaces';
