@@ -1,5 +1,5 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
-import { Artist, artists } from '../interfaces/interfaces';
+import { albums, Artist, artists, tracks } from '../interfaces/interfaces';
 import { CreateArtistDto, UpdateArtistDto } from './dto/artist.dto';
 import { v4 } from 'uuid';
 
@@ -47,6 +47,19 @@ export class ArtistService {
   deleteArtist(id: string) {
     const existedArtist = artists.find((artist, ind) => {
       if (artist.id === id) {
+
+        tracks.find((elem) => {
+          if (elem.artistId === id) {
+            elem.artistId = null;
+          }
+        })
+
+        albums.find((elem) => {
+          if (elem.artistId === id) {
+            elem.artistId = null;
+          }
+        })
+
         artists.splice(ind, 1);
         return true;
       }

@@ -37,3 +37,5 @@ export interface Favorites {
 
 export const users: User[] = [];
 export const artists: Artist[] = [];
+export const albums: Album[] = [];
+export const tracks: Track[] = [];
