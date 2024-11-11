@@ -19,28 +19,28 @@ export class TrackController {
 
   @Get()
   getAll(): Track[] {
-    return this.trackService.getAllTracks();
+    return this.trackService.getAll();
   }
 
   @Get(':id')
   getById(@Param('id', new ParseUUIDPipe()) id: string): Track {
-    return this.trackService.getTrackById(id);
+    return this.trackService.getById(id);
   }
 
   @Post()
   create(@Body() createTrackDto: CreateTrackDto) {
-    return this.trackService.createTrack(createTrackDto);
+    return this.trackService.create(createTrackDto);
   }
   @Put(':id')
   update(
     @Body() updateTrack: UpdateTrackDto,
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Track {
-    return this.trackService.updateTrack(updateTrack, id);
+    return this.trackService.update(updateTrack, id);
   }
   @Delete(':id')
   @HttpCode(204)
   delete(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.trackService.deleteTrack(id);
+    return this.trackService.delete(id);
   }
 }

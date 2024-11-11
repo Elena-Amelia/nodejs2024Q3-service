@@ -19,28 +19,28 @@ export class ArtistController {
 
   @Get()
   getAll(): Artist[] {
-    return this.artistService.getAllArtists();
+    return this.artistService.getAll();
   }
 
   @Get(':id')
   getById(@Param('id', new ParseUUIDPipe()) id: string): Artist {
-    return this.artistService.getArtistById(id);
+    return this.artistService.getById(id);
   }
 
   @Post()
   create(@Body() createArtistDto: CreateArtistDto) {
-    return this.artistService.createArtist(createArtistDto);
+    return this.artistService.create(createArtistDto);
   }
   @Put(':id')
   update(
     @Body() updateArtist: UpdateArtistDto,
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Artist {
-    return this.artistService.updateArtist(updateArtist, id);
+    return this.artistService.update(updateArtist, id);
   }
   @Delete(':id')
   @HttpCode(204)
   delete(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.artistService.deleteArtist(id);
+    return this.artistService.delete(id);
   }
 }

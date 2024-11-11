@@ -19,28 +19,28 @@ export class AlbumController {
 
   @Get()
   getAll(): Album[] {
-    return this.albumService.getAllAlbums();
+    return this.albumService.getAll();
   }
 
   @Get(':id')
   getById(@Param('id', new ParseUUIDPipe()) id: string): Album {
-    return this.albumService.getAlbumById(id);
+    return this.albumService.getById(id);
   }
 
   @Post()
   create(@Body() createAlbumDto: CreateAlbumDto) {
-    return this.albumService.createAlbum(createAlbumDto);
+    return this.albumService.create(createAlbumDto);
   }
   @Put(':id')
   update(
     @Body() updateAlbum: UpdateAlbumDto,
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Album {
-    return this.albumService.updateAlbum(updateAlbum, id);
+    return this.albumService.update(updateAlbum, id);
   }
   @Delete(':id')
   @HttpCode(204)
   delete(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.albumService.deleteAlbum(id);
+    return this.albumService.delete(id);
   }
 }

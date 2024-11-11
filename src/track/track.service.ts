@@ -5,7 +5,7 @@ import { v4 } from 'uuid';
 
 @Injectable()
 export class TrackService {
-  createTrack(dto: CreateTrackDto) {
+  create(dto: CreateTrackDto) {
     const track: Track = {
       id: v4(),
       name: dto.name,
@@ -17,11 +17,11 @@ export class TrackService {
     return track;
   }
 
-  getAllTracks(): Track[] {
+  getAll(): Track[] {
     return tracks;
   }
 
-  getTrackById(id: string): Track {
+  getById(id: string): Track {
     const existedTrack = tracks.find((track) => track.id === id);
 
     if (existedTrack) {
@@ -31,7 +31,7 @@ export class TrackService {
     }
   }
 
-  updateTrack(dto: UpdateTrackDto, id: string): Track {
+  update(dto: UpdateTrackDto, id: string): Track {
     const existedTrack = tracks.find((track) => {
       if (track.id === id) {
         track.name = dto.name;
@@ -49,7 +49,7 @@ export class TrackService {
     }
   }
 
-  deleteTrack(id: string) {
+  delete(id: string) {
     const existedTrack = tracks.find((track, ind) => {
       if (track.id === id) {
         tracks.splice(ind, 1);

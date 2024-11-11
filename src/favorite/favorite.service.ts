@@ -42,7 +42,7 @@ export class FavoritesService {
     }
   }
 
-  removeTrack(id: string) {
+  deleteTrack(id: string) {
     const favTrackIndex = favorites.tracks.indexOf(id);
 
     if (favTrackIndex !== -1) {
@@ -69,7 +69,7 @@ export class FavoritesService {
 
     if (artist) {
       favorites.artists.push(artist.id);
-      return `Track ${id} was added to Favorites`;
+      return `Artist ${id} was added to Favorites`;
     } else {
       throw new HttpException(
         "Artist doesn't exist",
@@ -78,14 +78,14 @@ export class FavoritesService {
     }
   }
 
-  removeArtist(id: string) {
+  deleteArtist(id: string) {
     const artistIndex = favorites.artists.indexOf(id);
 
     if (artistIndex !== -1) {
       favorites.artists.splice(artistIndex, 1);
     } else {
       throw new HttpException(
-        "Track doesn't exist in Favorites",
+        "Artist doesn't exist in Favorites",
         HttpStatus.NOT_FOUND,
       );
     }
@@ -94,7 +94,7 @@ export class FavoritesService {
     favorites.albums.find((albumId) => {
       if (albumId === id) {
         throw new HttpException(
-          'Artist already exists in Favorites',
+          'Album already exists in Favorites',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -104,23 +104,23 @@ export class FavoritesService {
 
     if (album) {
       favorites.albums.push(album.id);
-      return `Track ${id} was added to Favorites`;
+      return `Album ${id} was added to Favorites`;
     } else {
       throw new HttpException(
-        "Artist doesn't exist",
+        "Album doesn't exist",
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
   }
 
-  removeAlbum(id: string) {
+  deleteAlbum(id: string) {
     const albumIndex = favorites.albums.indexOf(id);
 
     if (albumIndex !== -1) {
       favorites.albums.splice(albumIndex, 1);
     } else {
       throw new HttpException(
-        "Track doesn't exist in Favorites",
+        "Album doesn't exist in Favorites",
         HttpStatus.NOT_FOUND,
       );
     }

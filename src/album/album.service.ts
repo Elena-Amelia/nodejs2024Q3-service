@@ -5,7 +5,7 @@ import { v4 } from 'uuid';
 
 @Injectable()
 export class AlbumService {
-  createAlbum(dto: CreateAlbumDto) {
+  create(dto: CreateAlbumDto) {
     const album: Album = {
       id: v4(),
       name: dto.name,
@@ -16,11 +16,11 @@ export class AlbumService {
     return album;
   }
 
-  getAllAlbums(): Album[] {
+  getAll(): Album[] {
     return albums;
   }
 
-  getAlbumById(id: string): Album {
+  getById(id: string): Album {
     const existedAlbum = albums.find((album) => album.id === id);
 
     if (existedAlbum) {
@@ -30,7 +30,7 @@ export class AlbumService {
     }
   }
 
-  updateAlbum(dto: UpdateAlbumDto, id: string): Album {
+  update(dto: UpdateAlbumDto, id: string): Album {
     const existedAlbum = albums.find((album) => {
       if (album.id === id) {
         album.name = dto.name;
@@ -47,7 +47,7 @@ export class AlbumService {
     }
   }
 
-  deleteAlbum(id: string) {
+  delete(id: string) {
     const existedAlbum = albums.find((album, ind) => {
       if (album.id === id) {
         albums.splice(ind, 1);

@@ -26,27 +26,27 @@ export class FavoritesController {
 
   @Delete('track/:id')
   @HttpCode(204)
-  removeTrack(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.favoritesService.removeTrack(id);
+  deleteTrack(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favoritesService.deleteTrack(id);
   }
-  @Post('track/:id')
+  @Post('artist/:id')
   createArtist(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.favoritesService.createArtist(id);
   }
 
-  @Delete('track/:id')
+  @Delete('artist/:id')
   @HttpCode(204)
-  removeArtist(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.favoritesService.removeArtist(id);
+  deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favoritesService.deleteArtist(id);
   }
-  @Post('track/:id')
+  @Post('album/:id')
   createAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.favoritesService.createAlbum(id);
   }
 
-  @Delete('track/:id')
+  @Delete('album/:id')
   @HttpCode(204)
-  removeAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.favoritesService.removeAlbum(id);
+  deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favoritesService.deleteAlbum(id);
   }
 }

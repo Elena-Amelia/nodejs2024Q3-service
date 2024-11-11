@@ -11,7 +11,7 @@ import { v4 } from 'uuid';
 
 @Injectable()
 export class ArtistService {
-  createArtist(dto: CreateArtistDto) {
+  create(dto: CreateArtistDto) {
     const artist: Artist = {
       id: v4(),
       name: dto.name,
@@ -21,11 +21,11 @@ export class ArtistService {
     return artist;
   }
 
-  getAllArtists(): Artist[] {
+  getAll(): Artist[] {
     return artists;
   }
 
-  getArtistById(id: string): Artist {
+  getById(id: string): Artist {
     const existedArtist = artists.find((artist) => artist.id === id);
 
     if (existedArtist) {
@@ -35,7 +35,7 @@ export class ArtistService {
     }
   }
 
-  updateArtist(dto: UpdateArtistDto, id: string): Artist {
+  update(dto: UpdateArtistDto, id: string): Artist {
     const existedArtist = artists.find((artist) => {
       if (artist.id === id) {
         artist.name = dto.name;
@@ -50,7 +50,7 @@ export class ArtistService {
       throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
     }
   }
-  deleteArtist(id: string) {
+  delete(id: string) {
     const existedArtist = artists.find((artist, ind) => {
       if (artist.id === id) {
         artists.splice(ind, 1);
