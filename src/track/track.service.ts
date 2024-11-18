@@ -34,6 +34,7 @@ export class TrackService {
     if (!track) {
       throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
     }
+    return track;
   }
 
   async update(dto: UpdateTrackDto, id: string) {
@@ -67,11 +68,11 @@ export class TrackService {
     if (!track) {
       throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
     }
-  
-      await this.prisma.track.delete({
-        where: {
-          id,
-        },
-      });
-}
+
+    await this.prisma.track.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
