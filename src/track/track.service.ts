@@ -1,65 +1,77 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
-import { Track, tracks, favorites } from '../interfaces/interfaces';
 import { CreateTrackDto, UpdateTrackDto } from './dto/track.dto';
-import { v4 } from 'uuid';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TrackService {
-  create(dto: CreateTrackDto) {
-    const track: Track = {
-      id: v4(),
-      name: dto.name,
-      duration: dto.duration,
-      artistId: dto.artistId,
-      albumId: dto.albumId,
-    };
-    tracks.push(track);
+  constructor(private prisma: PrismaService) {}
+
+  async create(dto: CreateTrackDto) {
+    const track = await this.prisma.track.create({
+      data: {
+        name: dto.name,
+        duration: dto.duration,
+        artistId: dto.artistId,
+        albumId: dto.albumId,
+      },
+    });
+
     return track;
   }
 
-  getAll(): Track[] {
+  async getAll() {
+    const tracks = await this.prisma.track.findMany();
     return tracks;
   }
 
-  getById(id: string): Track {
-    const existedTrack = tracks.find((track) => track.id === id);
-
-    if (existedTrack) {
-      return existedTrack;
-    } else {
-      throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
-    }
-  }
-
-  update(dto: UpdateTrackDto, id: string): Track {
-    const existedTrack = tracks.find((track) => {
-      if (track.id === id) {
-        track.name = dto.name;
-        track.duration = dto.duration;
-        track.artistId = dto.artistId;
-        track.albumId = dto.albumId;
-        return true;
-      }
+  async getById(id: string) {
+    const track = await this.prisma.track.findUnique({
+      where: {
+        id,
+      },
     });
 
-    if (existedTrack) {
-      return existedTrack;
-    } else {
+    if (!track) {
       throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
     }
   }
 
-  delete(id: string) {
-    const existedTrack = tracks.find((track, ind) => {
-      if (track.id === id) {
-        tracks.splice(ind, 1);
-        favorites.tracks = favorites.tracks.filter((elem) => elem !== id);
-        return true;
+  async update(dto: UpdateTrackDto, id: string) {
+    try {
+      const updatedTrack = await this.prisma.track.update({
+        where: {
+          id,
+        },
+        data: {
+          name: dto.name,
+          duration: dto.duration,
+          artistId: dto.artistId,
+          albumId: dto.albumId,
+        },
+      });
+      return updatedTrack;
+    } catch (err) {
+      if (err) {
+        throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
       }
+    }
+  }
+
+  async delete(id: string) {
+    const track = await this.prisma.track.findUnique({
+      where: {
+        id,
+      },
     });
 
-    if (!existedTrack) {
+    if (!track) {
       throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
     }
-  }
+  
+      await this.prisma.track.delete({
+        where: {
+          id,
+        },
+      });
+}
 }

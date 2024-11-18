@@ -21,21 +21,19 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getAll(): Promise<UserEntity[]> {
+  async getAll() {
     const users = await this.userService.getAllUsers();
     return users.map((user) => new UserEntity(user));
   }
 
   @Get(':id')
-  async getById(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<UserEntity> {
+  async getById(@Param('id', new ParseUUIDPipe()) id: string) {
     const user = await this.userService.getUserById(id);
     return new UserEntity(user);
   }
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.userService.createUser(createUserDto);
     return new UserEntity(user);
   }
@@ -44,7 +42,7 @@ export class UserController {
   async update(
     @Body() updatePasswordDto: UpdatePasswordDto,
     @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<UserEntity> {
+  ) {
     const user = await this.userService.update(updatePasswordDto, id);
     return new UserEntity(user);
   }
@@ -52,6 +50,6 @@ export class UserController {
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id', new ParseUUIDPipe()) id: string) {
-    await this.userService.deleteUser(id);
+    return await this.userService.deleteUser(id);
   }
 }

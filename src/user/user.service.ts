@@ -49,7 +49,7 @@ export class UserService {
     if (user.password === dto.oldPassword) {
       const updatedUser = await this.prisma.user.update({
         where: {
-          id: id,
+          id
         },
         data: {
           password: dto.newPassword,
@@ -66,7 +66,7 @@ export class UserService {
     try {
       const user = await this.prisma.user.delete({
         where: {
-          id: id,
+          id
         },
       });
     } catch {
