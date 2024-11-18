@@ -1,11 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi"]
 }
 
 datasource db {
@@ -14,22 +9,22 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  login      String
-  password   String
-  version    Int      @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id        String   @id @unique @default(uuid())
+  login     String
+  password  String
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Artist {
   id          String     @id @default(uuid())
   name        String
   grammy      Boolean
-  Album       Album[]
-  Track       Track[]
   favoritesId String?
+  Album       Album[]
   favorites   Favorites? @relation(fields: [favoritesId], references: [id])
+  Track       Track[]
 }
 
 model Album {
@@ -37,27 +32,27 @@ model Album {
   name        String
   year        Int
   artistId    String
-  Artist      Artist     @relation(fields: [artistId], references: [id])
-  Track       Track[]
-  favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   favoritesId String?
+  Artist      Artist     @relation(fields: [artistId], references: [id])
+  favorites   Favorites? @relation(fields: [favoritesId], references: [id])
+  Track       Track[]
 }
 
 model Track {
   id          String     @id @default(uuid())
   name        String
   duration    Int
-  artist      Artist     @relation(fields: [artistId], references: [id])
   artistId    String
-  Album       Album      @relation(fields: [albumId], references: [id])
   albumId     String
-  favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   favoritesId String?
+  Album       Album      @relation(fields: [albumId], references: [id])
+  artist      Artist     @relation(fields: [artistId], references: [id])
+  favorites   Favorites? @relation(fields: [favoritesId], references: [id])
 }
 
 model Favorites {
   id      String   @id @default(uuid())
-  artists Artist[]
   albums  Album[]
+  artists Artist[]
   tracks  Track[]
 }
