@@ -8,35 +8,45 @@ import {
   ParseUUIDPipe,
   Delete,
   HttpCode,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto, UpdateArtistDto } from './dto/artist.dto';
+import { ArtistEntity } from './entities/artist.entity';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Get()
   async getAll() {
-    return await this.artistService.getAll();
+    const artists = await this.artistService.getAll();
+    return artists.map((artist) => new ArtistEntity(artist));
   }
 
   @Get(':id')
   async getById(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.artistService.getById(id);
+    const artist = await this.artistService.getById(id);
+    return new ArtistEntity(artist);
   }
 
   @Post()
   async create(@Body() createArtistDto: CreateArtistDto) {
-    return await this.artistService.create(createArtistDto);
+    const artist = await this.artistService.create(createArtistDto);
+    return new ArtistEntity(artist);
   }
+
   @Put(':id')
   async update(
     @Body() updateArtist: UpdateArtistDto,
     @Param('id', new ParseUUIDPipe()) id: string,
   ) {
-    return await this.artistService.update(updateArtist, id);
+    const artist = await this.artistService.update(updateArtist, id);
+    return new ArtistEntity(artist);
   }
+  
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id', new ParseUUIDPipe()) id: string) {

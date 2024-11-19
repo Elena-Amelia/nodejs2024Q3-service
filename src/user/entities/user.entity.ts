@@ -12,7 +12,6 @@ export class UserEntity {
   @Transform(({ value }) => +value)
   createdAt: Date;
 
-
   @Transform(({ value }) => +value)
   updatedAt: Date; // timestamp of last update
 

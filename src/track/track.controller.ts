@@ -8,35 +8,45 @@ import {
   ParseUUIDPipe,
   Delete,
   HttpCode,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto, UpdateTrackDto } from './dto/track.dto';
+import { TrackEntity } from './entities/track.entity';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Get()
   async getAll() {
-    return await this.trackService.getAll();
+    const tracks = await this.trackService.getAll();
+    return tracks.map((track) => new TrackEntity(track));
   }
 
   @Get(':id')
   async getById(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.trackService.getById(id);
+    const track = await this.trackService.getById(id);
+    return new TrackEntity(track);
   }
 
   @Post()
   async create(@Body() createTrackDto: CreateTrackDto) {
-    return await this.trackService.create(createTrackDto);
+    const track = await this.trackService.create(createTrackDto);
+    return new TrackEntity(track);
   }
+
   @Put(':id')
   async update(
     @Body() updateTrack: UpdateTrackDto,
     @Param('id', new ParseUUIDPipe()) id: string,
   ) {
-    return await this.trackService.update(updateTrack, id);
+    const track = await this.trackService.update(updateTrack, id);
+    return new TrackEntity(track);
   }
+  
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id', new ParseUUIDPipe()) id: string) {

@@ -1,10 +1,14 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { CreateTrackDto, UpdateTrackDto } from './dto/track.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { FavoritesService } from 'src/favorite/favorite.service';
 
 @Injectable()
 export class TrackService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private favoriteService: FavoritesService,
+  ) {}
 
   async create(dto: CreateTrackDto) {
     const track = await this.prisma.track.create({
@@ -15,7 +19,6 @@ export class TrackService {
         albumId: dto.albumId,
       },
     });
-
     return track;
   }
 
@@ -68,6 +71,8 @@ export class TrackService {
     if (!track) {
       throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
     }
+
+    await this.favoriteService.deleteTrack(id);
 
     await this.prisma.track.delete({
       where: {

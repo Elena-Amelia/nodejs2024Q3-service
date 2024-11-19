@@ -1,10 +1,14 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { CreateArtistDto, UpdateArtistDto } from './dto/artist.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { FavoritesService } from 'src/favorite/favorite.service';
 
 @Injectable()
 export class ArtistService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private favoriteService: FavoritesService,
+  ) {}
 
   async create(dto: CreateArtistDto) {
     const artist = await this.prisma.artist.create({
@@ -54,8 +58,7 @@ export class ArtistService {
   }
 
   async delete(id: string) {
-
-     const artist = await this.prisma.artist.findUnique({
+    const artist = await this.prisma.artist.findUnique({
       where: {
         id,
       },
@@ -65,30 +68,12 @@ export class ArtistService {
       throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
     }
 
+    await this.favoriteService.deleteArtist(id);
 
     await this.prisma.artist.delete({
-        where: {
-          id,
-        },
-      });
-
-    // await this.prisma.album.updateMany({
-    //   where: {
-    //     artistId: id,
-    //   },
-    //   data: {
-    //     artistId: null,
-    //   },
-    // });
-  
-    //  await this.prisma.track.updateMany({
-    //   where: {
-    //     artistId: id,
-    //   },
-    //   data: {
-    //     artistId: null,
-    //   },
-    // });
-   
+      where: {
+        id,
+      },
+    });
   }
 }
