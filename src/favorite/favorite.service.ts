@@ -89,11 +89,15 @@ export class FavoritesService {
     });
 
     if (!favorites) {
-      return;
+      throw new HttpException(
+        "Track doesn't exist in Favorites",
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-    const foundTrack = favorites.tracks.filter((track) => track.id === id);
-    if (!foundTrack) {
+    const trackInd = favorites.tracks.findIndex((track) => track.id === id);
+
+    if (trackInd === -1) {
       throw new HttpException(
         "Track doesn't exist in Favorites",
         HttpStatus.NOT_FOUND,
@@ -167,13 +171,15 @@ export class FavoritesService {
       where: { id: 1 },
       include: { artists: true },
     });
-
     if (!favorites) {
-      return;
+      throw new HttpException(
+        "Artist doesn't exist in Favorites",
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-    const foundArtist = favorites.artists.filter((artist) => artist.id === id);
-    if (!foundArtist) {
+    const artistInd = favorites.artists.findIndex((artist) => artist.id === id);
+    if (artistInd === -1) {
       throw new HttpException(
         "Artist doesn't exist in Favorites",
         HttpStatus.NOT_FOUND,
@@ -245,11 +251,14 @@ export class FavoritesService {
     });
 
     if (!favorites) {
-      return;
+      throw new HttpException(
+        "Album doesn't exist in Favorites",
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-    const foundAlbum = favorites.albums.filter((album) => album.id === id);
-    if (!foundAlbum) {
+    const albumInd = favorites.albums.findIndex((album) => album.id === id);
+    if (albumInd === -1) {
       throw new HttpException(
         "Album doesn't exist in Favorites",
         HttpStatus.NOT_FOUND,

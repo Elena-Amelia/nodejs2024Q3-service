@@ -1,14 +1,10 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto/Album.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { FavoritesService } from 'src/favorite/favorite.service';
 
 @Injectable()
 export class AlbumService {
-  constructor(
-    private prisma: PrismaService,
-    private favoriteService: FavoritesService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateAlbumDto) {
     const album = await this.prisma.album.create({
@@ -69,8 +65,22 @@ export class AlbumService {
     if (!album) {
       throw new HttpException("Album doesn't exist", HttpStatus.NOT_FOUND);
     }
-    
-    await this.favoriteService.deleteAlbum(id);
+
+    const favoritesAlbums = await this.prisma.favorites.findUnique({
+      where: { id: 1 },
+      include: { albums: true },
+    });
+
+    if (favoritesAlbums) {
+      await this.prisma.favorites.update({
+        where: { id: 1 },
+        data: {
+          albums: {
+            disconnect: { id: id },
+          },
+        },
+      });
+    }
 
     await this.prisma.album.delete({
       where: {
