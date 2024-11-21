@@ -23,7 +23,9 @@
     "start:cmd": "npx prisma migrate dev && npm run start:dev",
     "docker:start": "docker compose up",
     "docker:stop": "docker stop app && docker stop database",
-    "docker:test": "docker exec app npm run test"
+    "docker:test": "docker exec app npm run test",
+    "scan:postgres": "docker scout quickview elenaamelia/postgres",
+    "scan:app": "docker scout quickview elenaamelia/app"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
