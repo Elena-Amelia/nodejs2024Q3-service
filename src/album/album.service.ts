@@ -1,5 +1,5 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
-import { CreateAlbumDto, UpdateAlbumDto } from './dto/Album.dto';
+import { CreateAlbumDto, UpdateAlbumDto } from './dto/album.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()

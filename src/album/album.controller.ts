@@ -12,7 +12,7 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
-import { CreateAlbumDto, UpdateAlbumDto } from './dto/Album.dto';
+import { CreateAlbumDto, UpdateAlbumDto } from './dto/album.dto';
 import { AlbumEntity } from './entities/album.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)

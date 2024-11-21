@@ -6,10 +6,6 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "prisma:dev:deploy": "prisma migrate deploy",
-    "db:dev:rm": "docker compose rm db -s -f -v",
-    "db:dev:up": "docker compose up db -d",
-    "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -23,7 +19,11 @@
     "test:refresh": "cross-env TEST_MODE=auth jest --testPathPattern refresh.e2e.spec.ts --noStackTrace --runInBand",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "start:cmd": "npx prisma migrate dev && npm run start:dev",
+    "docker:start": "docker compose up",
+    "docker:stop": "docker stop app && docker stop database",
+    "docker:test": "docker exec app npm run test"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
