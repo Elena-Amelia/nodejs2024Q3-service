@@ -38,10 +38,14 @@ Based on the `.env.example` file, create a `.env` file (change settings if neces
 npm run docker:start
 ```
 
+When you first launch an application, postgres and application images is downloaded from Docker Hub.
+
 After starting the app you can open
 in your browser OpenAPI documentation by typing http://localhost:{PORT}/doc/.
 
 ## Stop application
+
+The command must be run from another terminal.
 
 ```
 npm run docker:stop
@@ -61,6 +65,12 @@ To run only one of all test suites
 
 ```
 npm run test -- <path to suite>
+```
+
+To test inside of container
+
+```
+npm run docker:test
 ```
 
 ## Vulnerability scanning
