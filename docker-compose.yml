@@ -1,14 +1,16 @@
 version: '3.8'
 services:
   postgres:
-    image: postgres
+    # build: ./database
+    image: elenaamelia/postgres
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     env_file: .env
-    container_name: postgres
+    container_name: ${POSTGRES_HOST}
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/logs
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -19,6 +21,29 @@ services:
       - -c
       - PORT=${POSTGRES_PORT}
     restart: on-failure
+    networks:
+      - net
 
+  app:
+    build: .
+    image: elenaamelia/app-part3
+    ports:
+      - ${PORT}:${PORT}
+    env_file: .env
+    container_name: app
+
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - postgres
+    environment:
+      - PORT=${PORT}
+    restart: always
+    networks:
+      - net
+networks:
+  net:
+    driver: bridge
 volumes:
   postgres_data:
+  postgres_logs:

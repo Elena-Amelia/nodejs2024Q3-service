@@ -24,6 +24,8 @@
     "docker:start": "docker compose up",
     "docker:stop": "docker stop app && docker stop database",
     "docker:test": "docker exec app npm run test",
+    "docker:test:auth": "docker exec app npm run test:auth",
+    "docker:test:refresh": "docker exec app npm run test:refresh",
     "scan:postgres": "docker scout quickview elenaamelia/postgres",
     "scan:app": "docker scout quickview elenaamelia/app"
   },

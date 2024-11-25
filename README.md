@@ -21,7 +21,7 @@ Go to folder nodejs2024Q3-service
 Go to development branch:
 
 ```
-git checkout develop-part2
+git checkout develop-part3
 ```
 
 ## Installing NPM modules
@@ -55,22 +55,26 @@ npm run docker:stop
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests with authorization
 
 ```
-npm run test
+npm run test:auth
 ```
 
-To run only one of all test suites
+To run refresh test
 
 ```
-npm run test -- <path to suite>
+npm run test:refresh
 ```
 
 To test inside of container
 
 ```
-npm run docker:test
+npm run docker:test:auth
+```
+
+```
+npm run docker:test:refresh
 ```
 
 ## Vulnerability scanning
