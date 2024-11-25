@@ -10,11 +10,14 @@ import {
   HttpCode,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto, UpdateArtistDto } from './dto/artist.dto';
 import { ArtistEntity } from './entities/artist.entity';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('artist')
 export class ArtistController {
@@ -46,7 +49,7 @@ export class ArtistController {
     const artist = await this.artistService.update(updateArtist, id);
     return new ArtistEntity(artist);
   }
-  
+
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id', new ParseUUIDPipe()) id: string) {

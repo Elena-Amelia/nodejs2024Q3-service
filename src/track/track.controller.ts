@@ -10,11 +10,14 @@ import {
   HttpCode,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto, UpdateTrackDto } from './dto/track.dto';
 import { TrackEntity } from './entities/track.entity';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('track')
 export class TrackController {
@@ -46,7 +49,7 @@ export class TrackController {
     const track = await this.trackService.update(updateTrack, id);
     return new TrackEntity(track);
   }
-  
+
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id', new ParseUUIDPipe()) id: string) {

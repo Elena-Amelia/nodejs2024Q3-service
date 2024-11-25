@@ -10,11 +10,14 @@ import {
   HttpCode,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto/album.dto';
 import { AlbumEntity } from './entities/album.entity';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('album')
 export class AlbumController {
@@ -37,7 +40,7 @@ export class AlbumController {
     const album = await this.albumService.create(createAlbumDto);
     return new AlbumEntity(album);
   }
-  
+
   @Put(':id')
   async update(
     @Body() updateAlbum: UpdateAlbumDto,

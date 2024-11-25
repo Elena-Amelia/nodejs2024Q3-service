@@ -8,12 +8,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @unique @default(uuid())
-  login     String
+  id        String   @id @default(uuid())
+  login     String   @unique
   password  String
   version   Int      @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
 
 model Artist {
@@ -24,6 +26,8 @@ model Artist {
   Favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   albums      Album[]
   tracks      Track[]
+
+  @@map("artists")
 }
 
 model Album {
@@ -38,6 +42,8 @@ model Album {
   Favorites   Favorites? @relation(fields: [favoritesId], references: [id])
 
   tracks Track[]
+
+  @@map("albums")
 }
 
 model Track {
@@ -50,6 +56,8 @@ model Track {
   Album       Album?     @relation(fields: [albumId], references: [id], onDelete: SetNull)
   Artist      Artist?    @relation(fields: [artistId], references: [id], onDelete: SetNull)
   Favorites   Favorites? @relation(fields: [favoritesId], references: [id])
+
+  @@map("tracks")
 }
 
 model Favorites {
@@ -57,4 +65,6 @@ model Favorites {
   albums  Album[]
   artists Artist[]
   tracks  Track[]
+
+  @@map("favorites")
 }

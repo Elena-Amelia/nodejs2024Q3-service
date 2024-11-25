@@ -1,16 +1,18 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { CreateUserDto, UpdatePasswordDto } from './dto/user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async createUser(dto: CreateUserDto) {
+    const hash = await bcrypt.hash(dto.password, +process.env.CRYPT_SALT);
     const user = await this.prisma.user.create({
       data: {
         login: dto.login,
-        password: dto.password,
+        password: hash,
       },
     });
 
@@ -46,13 +48,21 @@ export class UserService {
       throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
     }
 
-    if (user.password === dto.oldPassword) {
+    const oldPasswordMatches = await bcrypt.compare(
+      dto.oldPassword,
+      user.password,
+    );
+    if (oldPasswordMatches) {
+      const hashNewPassword = await bcrypt.hash(
+        dto.newPassword,
+        +process.env.CRYPT_SALT,
+      );
       const updatedUser = await this.prisma.user.update({
         where: {
           id,
         },
         data: {
-          password: dto.newPassword,
+          password: hashNewPassword,
           version: ++user.version,
         },
       });
